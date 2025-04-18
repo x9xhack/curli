@@ -70,7 +70,6 @@ func main() {
 	if opts.Has("h") || opts.Has("help") {
 		stdout = &formatter.HelpAdapter{Out: stdout, CmdName: os.Args[0]}
 	} else {
-		isForm := opts.Has("F")
 		if pretty || term.IsTerminal(stdoutFd) {
 			inputWriter = &formatter.JSON{
 				Out:    inputWriter,
@@ -96,7 +95,6 @@ func main() {
 				Scheme: scheme,
 			}
 		}
-		hasInput := true
 		if data := opts.Val("d"); data != "" {
 			// If data is provided via -d, read it from there for the verbose mode.
 			// XXX handle the @filename case.
@@ -106,8 +104,6 @@ func main() {
 			opts = append(opts, "-d@-")
 			// Tee the stdin to the buffer used show the posted data in verbose mode.
 			stdin = io.TeeReader(stdin, inputWriter)
-		} else {
-			hasInput = false
 		}
 	}
 	if opts.Has("curl") {
