@@ -1,3 +1,7 @@
+## Forked from [trinhminhtriet/curli](https://github.com/trinhminhtriet/curli)
+
+This repository was originally forked from [**trinhminhtriet/curli**](https://github.com/trinhminhtriet/curli). It has since been maintained and updated by me, [x9xhack](https://github.com/x9xhack). The project has been separated from the original fork network and is now an independent repository.
+
 # Curli 🌀
 
 ```text
