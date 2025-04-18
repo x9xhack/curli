@@ -1,0 +1,43 @@
+version: 2
+project_name: curli
+builds:
+  - binary: curli
+    env:
+      - CGO_ENABLED=0
+      - APP_NAME=curli
+      - AUTHOR_USERNAME=x9xhack
+    goos:
+      - darwin
+      - linux
+      - freebsd
+    goarch:
+      - 386
+      - amd64
+      - arm
+      - arm64
+      - ppc64le
+      - s390x
+    goarm:
+      - 6
+      - 7
+    ldflags:
+      - -s -w
+      - -X "github.com/${AUTHOR_USERNAME}/${APP_NAME}/internal.VERSION={{.Version}}"
+      - -X "github.com/${AUTHOR_USERNAME}/${APP_NAME}/internal.DATE={{.Date}}"
+
+release:
+  name_template: "{{.ProjectName}}-v{{.Version}}"
+
+signs:
+  - cmd: cosign
+    artifacts: checksum
+    output: true
+    certificate: "${artifact}.pem"
+    args:
+      - sign-blob
+      - "--output-signature=${signature}"
+      - "--output-certificate=${certificate}"
+      - "${artifact}"
+      - "--yes"
+    env:
+      - COSIGN_EXPERIMENTAL=1
