@@ -38,11 +38,11 @@ func main() {
 	opts.Remove("i")
 
 	var (
-		stdin        io.Reader = os.Stdin
-		stdout       io.Writer = os.Stdout
-		stderr       io.Writer = os.Stderr
-		input        = &bytes.Buffer{}
-		inputWriter  io.Writer = input
+		stdin       io.Reader = os.Stdin
+		stdout      io.Writer = os.Stdout
+		stderr      io.Writer = os.Stderr
+		input                 = &bytes.Buffer{}
+		inputWriter io.Writer = input
 	)
 
 	if len(opts) == 0 {
