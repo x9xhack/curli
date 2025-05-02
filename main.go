@@ -65,6 +65,16 @@ func main() {
 	if opts.Has("h") || opts.Has("help") {
 		stdout = &formatter.HelpAdapter{Out: stdout, CmdName: os.Args[0]}
 	} else {
+		if verbose && headerSupplied(opts, "Content-Type") {
+			for _, h := range append(opts.Vals("H"), opts.Vals("header")...) {
+				if strings.HasPrefix(strings.ToLower(h), "content-type:") &&
+					strings.Contains(strings.ToLower(h), "application/json") {
+					inputWriter = &formatter.JSON{Out: inputWriter, Scheme: scheme}
+					break
+				}
+			}
+		}
+
 		if term.IsTerminal(stdoutFd) {
 			stdout = &formatter.BinaryFilter{Out: stdout}
 		}
