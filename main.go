@@ -65,9 +65,7 @@ func main() {
 	if opts.Has("h") || opts.Has("help") {
 		stdout = &formatter.HelpAdapter{Out: stdout, CmdName: os.Args[0]}
 	} else {
-		if pretty || term.IsTerminal(stdoutFd) {
-			inputWriter = &formatter.JSON{Out: inputWriter, Scheme: scheme}
-			stdout = &formatter.JSON{Out: stdout, Scheme: scheme}
+		if term.IsTerminal(stdoutFd) {
 			stdout = &formatter.BinaryFilter{Out: stdout}
 		}
 
@@ -129,8 +127,26 @@ func main() {
 		}
 	}
 
+	// Extract content-type from headers
+	contentType := ""
+	for _, line := range strings.Split(errBuf.String(), "\n") {
+		if strings.HasPrefix(strings.ToLower(line), "content-type:") {
+			contentType = strings.ToLower(strings.TrimSpace(strings.SplitN(line, ":", 2)[1]))
+			break
+		}
+	}
+
 	io.Copy(stderr, &errBuf)
-	io.Copy(stdout, &outBuf)
+
+	if term.IsTerminal(stdoutFd) && strings.Contains(contentType, "application/json") {
+		var prettyBuf bytes.Buffer
+		jsonFormatter := &formatter.JSON{Out: &prettyBuf, Scheme: scheme}
+		io.Copy(jsonFormatter, &outBuf)
+		io.Copy(stdout, &prettyBuf)
+	} else {
+		io.Copy(stdout, &outBuf)
+	}
+
 	os.Exit(status)
 }
 
