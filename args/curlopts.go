@@ -3,7 +3,7 @@ package args
 import "sort"
 
 var (
-	curlShortValues = "EKCbcdDFPHhmoUQreXYytzTuAw"
+	curlShortValues = "EKCbcdDFPHhmoUQreXxYytzTuAw"
 	curlLongValues  = []string{
 		"abstract-unix-socket",
 		"alt-svc",
