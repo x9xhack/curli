@@ -148,7 +148,7 @@ func main() {
 
 	io.Copy(stderr, &errBuf)
 
-	if term.IsTerminal(stdoutFd) && strings.Contains(contentType, "application/json") {
+	if term.IsTerminal(stdoutFd) && strings.Contains(contentType, "json") {
 		var prettyBuf bytes.Buffer
 		jsonFormatter := &formatter.JSON{Out: &prettyBuf, Scheme: scheme}
 		io.Copy(jsonFormatter, &outBuf)
