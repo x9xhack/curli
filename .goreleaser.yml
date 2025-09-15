@@ -26,7 +26,7 @@ builds:
       - -X "github.com/${AUTHOR_USERNAME}/${APP_NAME}/internal.DATE={{.Date}}"
 
 release:
-  name_template: "{{.ProjectName}}-v{{.Version}}"
+  name_template: "v{{.Version}}"
 
 signs:
   - cmd: cosign
